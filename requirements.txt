@@ -1,0 +1,9 @@
+skyfield
+numpy
+requests
+json
+time
+astropy
+os
+python-dotenv
+matplotlib

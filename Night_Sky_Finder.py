@@ -55,10 +55,10 @@ calibration_data = get_calibration(job_id)
 print(json.dumps(calibration_data, indent=2))
 
 # Step 1: Your input from Astrometry.net
-ra_deg = 220.90287878844615
-dec_deg = 78.1016098453677
+ra_deg = calibration_data['ra']
+dec_deg = calibration_data['dec']
 ra_hours = ra_deg / 15  # Convert to hours for Skyfield
-fov_tolerance_deg = 9.93  # from radius
+fov_tolerance_deg = calibration_data['radius']  # from radius
 
 def find_best_location_time(ra_deg, dec_deg, fov_deg):
     # Setup sky coordinate from astrometry
