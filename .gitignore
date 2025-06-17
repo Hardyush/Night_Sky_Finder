@@ -1,0 +1,32 @@
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment files
+.env
+*.env
+.venv/
+env/
+venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+# Logs
+*.log
+
+# API results or large data
+*.json
+*.csv
+*.h5
+*.fits
+
+# Ignore result from Astrometry.net if large
+result.json
