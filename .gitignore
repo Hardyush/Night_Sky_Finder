@@ -4,22 +4,6 @@ __pycache__/
 
 # Environment files
 .env
-*.env
-.venv/
-env/
-venv/
-
-# VS Code settings
-.vscode/
-
-# Logs
-*.log
-
-# API results or large data
-*.json
-*.csv
-*.h5
-*.fits
 
 # Ignore result from Astrometry.net if large
 result.json
