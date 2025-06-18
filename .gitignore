@@ -2,19 +2,12 @@
 __pycache__/
 *.py[cod]
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
 # Environment files
 .env
 *.env
 .venv/
 env/
 venv/
-
-# OS files
-.DS_Store
-Thumbs.db
 
 # VS Code settings
 .vscode/
