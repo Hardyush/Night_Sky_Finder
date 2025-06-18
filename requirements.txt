@@ -7,3 +7,4 @@ astropy
 os
 python-dotenv
 matplotlib
+Flask
