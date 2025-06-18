@@ -3,7 +3,6 @@ import numpy as np
 from astropy.coordinates import EarthLocation, AltAz, SkyCoord
 from astropy.time import Time
 import astropy.units as u
-from astrometry_api import job_id
 import argparse
 import json
 import requests
