@@ -3,13 +3,18 @@ import numpy as np
 from astropy.coordinates import EarthLocation, AltAz, SkyCoord
 from astropy.time import Time
 import astropy.units as u
-from astrometry_api import calibration_data
+from astrometry_api import job_id
 import argparse
 import json
+import requests
 
-def estimate_time(result_json_path):
-    with open(result_json_path, "r") as f:
-        data = json.load(f)
+
+
+def estimate_time(job_id):
+    url = f'http://nova.astrometry.net/api/jobs/{job_id}/calibration'
+    response = requests.get(url)
+    calibration_data = response.json()
+    print(json.dumps(calibration_data, indent=2))
     ra_deg = calibration_data['ra']
     dec_deg = calibration_data['dec']
     fov_tolerance_deg = calibration_data['radius']  # from radius
@@ -42,15 +47,6 @@ def estimate_time(result_json_path):
     candidates = find_best_location_time(ra_deg, dec_deg, fov_tolerance_deg)
     for lat, lon, hour, alt in candidates[:5]:
         print(f"Lat {lat}°, Lon {lon}°, Time {hour}:00 UTC, Altitude: {alt:.2f}°")
-    best_guess = {
-        "latitude": 47.6,
-        "longitude": -122.3,
-        "datetime_utc": "2024-04-22T05:30:00Z"
-    }
-    print("[✓] Best guess:")
-    for k, v in best_guess.items():
-        print(f"  {k}: {v}")
-    return best_guess
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Estimate date/time from Astrometry result.json")
