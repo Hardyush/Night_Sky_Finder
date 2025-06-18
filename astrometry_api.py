@@ -10,9 +10,10 @@ load_dotenv()
 ASTROMETRY_API_KEY = os.getenv("ASTROMETRY_API_KEY")
 
 def get_session():
-    R = requests.post('http://nova.astrometry.net/api/login', data={'request-json': json.dumps({"apikey": "ASTROMETRY_API_KEY"})})
+    R = requests.post('http://nova.astrometry.net/api/login', data={'request-json': json.dumps({"apikey": ASTROMETRY_API_KEY})})
     session = R.json()['session']
     print("Session Id:", session)
+    return session
 def upload_image(image_path):
     if not os.path.exists(image_path):
         print(f"❌ Image not found: {image_path}")
@@ -26,8 +27,6 @@ def upload_image(image_path):
         data = {'request-json': json.dumps({'session': session})}
         response = requests.post(url, data=data, files=files)
     result = response.json()
-    if "subid" not in result:
-        raise Exception(f"Upload failed: {result.get('errormessage')}")
     subid = result["subid"]
     print(f"[✓] Submission ID: {subid}")
 
@@ -70,9 +69,14 @@ if __name__ == "__main__":
                     result = estimate_time(job_id)
 
                     # Write to results.txt
-                    f_out.write(f"===== {filename} =====\n")
-                    f_out.write(result + "\n\n")
-                    print(f"📝 Results saved for {filename}")
+                    if result is not None:
+                        f_out.write(f"===== {filename} =====\n")
+                        for item in result:
+                            f_out.write(f"{item}\n")
+                            f_out.write("\n")
+                            print(f"📝 Results saved for {filename}")
+                        else:
+                            print(f"⚠️ No result returned for job {job_id}")
 
                 except Exception as e:
                     print(f"❌ Error processing {filename}: {e}")

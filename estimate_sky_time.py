@@ -44,8 +44,7 @@ def estimate_time(job_id):
         return sorted(best_matches, key=lambda x: -x[3])  # highest altitude first
 
     candidates = find_best_location_time(ra_deg, dec_deg, fov_tolerance_deg)
-    for lat, lon, hour, alt in candidates[:5]:
-        print(f"Lat {lat}°, Lon {lon}°, Time {hour}:00 UTC, Altitude: {alt:.2f}°")
+    return candidates[:5]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Estimate date/time from Astrometry result.json")
