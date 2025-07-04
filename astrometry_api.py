@@ -47,6 +47,28 @@ def upload_image(image_path):
       json.dump(job_info, f, indent=2)
     return job_id
 
+def reverse_geocode(lat, lon):
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse"
+        params = {
+            "lat": lat,
+            "lon": lon,
+            "format": "json",
+            "zoom": 10,
+            "addressdetails": 1,
+        }
+        headers = {"User-Agent": "NightSkyFinder"}
+        resp = requests.get(url, params=params, headers=headers, timeout=10)
+        data = resp.json()
+        address = data.get("address", {})
+        city = address.get("city") or address.get("town") or address.get("village") or ""
+        state = address.get("state") or ""
+        country = address.get("country") or ""
+        location_str = ", ".join(filter(None, [city, state, country]))
+        return location_str if location_str else "Unknown location"
+    except Exception:
+        return "Unknown location"
+
 if __name__ == "__main__":
     image_dir = "Images"
     results_file = "results.txt"
@@ -55,7 +77,7 @@ if __name__ == "__main__":
         print(f"❌ Folder '{image_dir}' does not exist.")
         exit(1)
 
-    with open(results_file, "w") as f_out:
+    with open(results_file, "w", encoding="utf-8") as f_out:
         for filename in os.listdir(image_dir):
             if filename.lower().endswith((".jpg", ".jpeg", ".png", ".fits")):
                 image_path = os.path.join(image_dir, filename)
@@ -72,11 +94,16 @@ if __name__ == "__main__":
                     if result is not None:
                         f_out.write(f"===== {filename} =====\n")
                         for item in result:
-                            f_out.write(f"{item}\n")
-                            f_out.write("\n")
-                            print(f"📝 Results saved for {filename}")
-                        else:
-                            print(f"⚠️ No result returned for job {job_id}")
+                            lat, lon, hour, alt = item
+                            location_str = reverse_geocode(lat, lon)
+                            f_out.write(
+                                f"Lat {lat}°, Lon {lon}°, Time {hour:02d}:00 UTC, Altitude: {alt:.2f}°, Location: {location_str}\n"
+                            )
+                            time.sleep(1)
+                        f_out.write("\n")
+                        print(f"📝 Results saved for {filename}")
+                    else:
+                        print(f"⚠️ No result returned for job {job_id}")
 
                 except Exception as e:
                     print(f"❌ Error processing {filename}: {e}")

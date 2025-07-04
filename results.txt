@@ -1,0 +1,7 @@
+===== test1.jpeg =====
+Lat 80°, Lon 30°, Time 20:00 UTC, Altitude: 88.00°, Location: Unknown location
+Lat 80°, Lon 0°, Time 22:00 UTC, Altitude: 88.00°, Location: Unknown location
+Lat 80°, Lon 60°, Time 18:00 UTC, Altitude: 88.00°, Location: Архангельская область, Россия
+Lat 80°, Lon 90°, Time 16:00 UTC, Altitude: 88.00°, Location: Красноярский край, Россия
+Lat 80°, Lon 120°, Time 14:00 UTC, Altitude: 88.00°, Location: Unknown location
+
